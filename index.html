@@ -548,6 +548,159 @@
   .atd-date { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 10px; }
   .atd-region { font-size: 10px; color: var(--text-dim); }
 
+  /* ===== LOGISTICS GAME ===== */
+  #logisticOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 8000;
+    background: #0a0d14;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #logisticOverlay.visible { display: flex; }
+
+  #lgHeader {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  #lgHeader h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .lg-stat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .lg-stat span { color: var(--text-dim); margin-right: 4px; }
+  .lg-hp-bar {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+  .lg-hp-track {
+    width: 80px; height: 8px;
+    background: var(--border); border-radius: 4px; overflow: hidden;
+  }
+  .lg-hp-fill {
+    height: 100%; border-radius: 4px;
+    background: #26de81; transition: width .3s, background .3s;
+  }
+  #lgCloseBtn {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    padding: 5px 12px; border-radius: 5px;
+    border: 1px solid var(--border); color: var(--text-dim);
+    background: transparent; cursor: pointer;
+  }
+  #lgCloseBtn:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  #lgBody {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  #lgCanvas {
+    flex: 1;
+    display: block;
+    cursor: crosshair;
+  }
+
+  #lgSidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .lgs-section {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .lgs-title {
+    font-size: 9px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 6px;
+  }
+  .lgs-orders {
+    flex: 1; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+  .lg-order {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; line-height: 1.4;
+  }
+  .lg-order.urgent { border-left: 3px solid #fc5c65; padding-left: 9px; }
+  .lg-order.normal { border-left: 3px solid #ff9f43; padding-left: 9px; }
+  .lg-order-route { font-weight: 600; color: var(--text); }
+  .lg-order-goods { color: var(--text-dim); font-size: 10px; }
+  .lg-order-timer {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    margin-top: 2px;
+  }
+  .lg-order-timer.ok   { color: #26de81; }
+  .lg-order-timer.warn { color: #ff9f43; }
+  .lg-order-timer.late { color: #fc5c65; }
+
+  .lg-upgrade-btn {
+    width: 100%; padding: 7px 10px; margin-bottom: 6px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text);
+    font-family: 'Geologica', sans-serif; font-size: 11px;
+    cursor: pointer; text-align: left; display: flex;
+    justify-content: space-between; align-items: center;
+    transition: border-color .15s;
+  }
+  .lg-upgrade-btn:hover { border-color: var(--accent); }
+  .lg-upgrade-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .lg-upgrade-btn .cost { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #26de81; }
+
+  /* Start/End screens */
+  #lgStart, #lgEnd {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(10,13,20,.92);
+    z-index: 100;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  #lgStart h2, #lgEnd h2 { font-size: 22px; font-weight: 700; }
+  #lgStart p, #lgEnd p { font-size: 13px; color: var(--text-dim); max-width: 360px; line-height: 1.5; }
+  .lg-big-btn {
+    padding: 12px 30px;
+    background: var(--accent); color: #fff; border: none;
+    border-radius: 8px; font-family: 'Geologica', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    margin-top: 8px;
+  }
+  .lg-big-btn:hover { opacity: .85; }
+  #lgScoreFinal { font-size: 32px; font-weight: 700; color: #26de81; }
+
+  /* Route drawing hint */
+  #lgHint {
+    position: absolute;
+    bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 14px;
+    font-size: 12px; color: var(--accent); font-style: italic;
+    pointer-events: none; white-space: nowrap;
+    z-index: 10;
+  }
+
 
   /* Faction picker overlay */
 
@@ -577,6 +730,7 @@
   <span class="flag">🇧🇾</span>
   <h1>Промышленность Беларуси</h1>
   <button class="quiz-btn" id="quizToggleBtn" onclick="toggleQuiz()">🎯 Тест</button>
+  <button class="quiz-btn" id="logisticBtn" onclick="toggleLogistic()" style="margin-left:6px">🚚 Логистика</button>
 </header>
 
 <div class="mobile-tabs" id="mobileTabs">
@@ -649,6 +803,81 @@
   </div>
   <div class="admin-body" id="adminBody">
     <div class="admin-loading">Загрузка…</div>
+  </div>
+</div>
+
+<!-- LOGISTICS GAME -->
+<div id="logisticOverlay">
+  <div id="lgHeader">
+    <span style="font-size:18px">🚚</span>
+    <h2>Логистика Беларуси</h2>
+    <div class="lg-stat"><span>💰</span><b id="lgMoney">0</b> руб.</div>
+    <div class="lg-stat"><span>📦</span><b id="lgDelivered">0</b> доставок</div>
+    <div class="lg-stat"><span>⏱</span><b id="lgTimer">0:00</b></div>
+    <div class="lg-stat"><span>⚡</span>Ур. <b id="lgLevel">1</b></div>
+    <div class="lg-hp-bar">
+      <span style="font-size:11px;color:var(--text-dim)">❤️</span>
+      <div class="lg-hp-track"><div class="lg-hp-fill" id="lgHpFill"></div></div>
+      <span id="lgHpText" style="font-family:'JetBrains Mono',monospace;font-size:11px"></span>
+    </div>
+    <button style="flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);color:var(--text-dim);background:transparent;cursor:pointer;margin-right:4px" onclick="lgShowLeaderboard()">🏆 Рейтинг</button>
+    <button id="lgCloseBtn" onclick="toggleLogistic()">✕ Выйти</button>
+  </div>
+
+  <!-- Leaderboard overlay inside logistics -->
+  <div id="lgLeaderboard" style="display:none;position:absolute;inset:0;z-index:200;background:rgba(10,13,20,.92);align-items:center;justify-content:center;">
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 50px rgba(0,0,0,.8);width:min(420px,calc(100vw - 32px));padding:22px 20px;max-height:80vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <span style="font-size:16px;font-weight:700">🏆 Рейтинг выживания</span>
+        <button onclick="document.getElementById('lgLeaderboard').style.display='none'" style="background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer">✕</button>
+      </div>
+      <div id="lgLeaderboardBody"><div style="text-align:center;padding:30px;color:var(--text-dim)">Загрузка…</div></div>
+    </div>
+  </div>
+  <div id="lgBody">
+    <canvas id="lgCanvas"></canvas>
+    <div id="lgSidebar">
+      <div class="lgs-section">
+        <div class="lgs-title">📋 Активные заказы</div>
+        <div id="lgOrderList"></div>
+      </div>
+      <div class="lgs-section">
+        <div class="lgs-title">⬆️ Улучшения</div>
+        <button class="lg-upgrade-btn" id="upgSpeed" onclick="buyUpgrade('speed')">
+          <span>🚀 Скорость грузовиков</span>
+          <span class="cost" id="upgSpeedCost"></span>
+        </button>
+        <button class="lg-upgrade-btn" id="upgCapacity" onclick="buyUpgrade('capacity')">
+          <span>📦 Вместимость</span>
+          <span class="cost" id="upgCapacityCost"></span>
+        </button>
+        <button class="lg-upgrade-btn" id="upgTrucks" onclick="buyUpgrade('trucks')">
+          <span>🚚 Больше грузовиков</span>
+          <span class="cost" id="upgTrucksCost"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="lgHint">Нажмите на город-отправитель, затем на город-получатель</div>
+
+  <!-- Start screen -->
+  <div id="lgStart">
+    <div style="font-size:48px">🚚</div>
+    <h2>Логистика Беларуси</h2>
+    <p>Соединяйте города маршрутами и доставляйте грузы вовремя. Пропущенные заказы снижают здоровье. Зарабатывайте деньги и улучшайте флот.</p>
+    <p style="font-size:11px;color:var(--text-dim)">Клик на город А → клик на город Б = маршрут. Грузовики поедут автоматически.</p>
+    <button class="lg-big-btn" onclick="lgStartGame()">Начать игру →</button>
+  </div>
+
+  <!-- End screen -->
+  <div id="lgEnd" style="display:none">
+    <div style="font-size:48px">💀</div>
+    <h2>Игра окончена!</h2>
+    <div id="lgScoreFinal"></div>
+    <p id="lgEndSub"></p>
+    <button class="lg-big-btn" onclick="lgStartGame()">Попробовать снова</button>
+    <button class="lg-big-btn" style="background:var(--hover);margin-top:0" onclick="lgShowLeaderboard()">🏆 Рейтинг</button>
+    <button class="lg-big-btn" style="background:var(--border);margin-top:0" onclick="toggleLogistic()">Выйти</button>
   </div>
 </div>
 
@@ -1522,8 +1751,8 @@ function initUser() {
   const saved = localStorage.getItem('belarus_username');
   if (saved) {
     currentUserName = saved;
+    trackVisit(saved); // track returning visit
   } else {
-    // Show name prompt
     document.getElementById('namePrompt').classList.add('visible');
     setTimeout(() => document.getElementById('nameInput').focus(), 100);
   }
@@ -1534,7 +1763,6 @@ function saveName() {
   if (!input) return;
 
   if (input === ADMIN_PASS) {
-    // Admin mode
     document.getElementById('namePrompt').classList.remove('visible');
     openAdmin();
     return;
@@ -1543,6 +1771,35 @@ function saveName() {
   currentUserName = input;
   localStorage.setItem('belarus_username', input);
   document.getElementById('namePrompt').classList.remove('visible');
+
+  // Track visit
+  trackVisit(input);
+}
+
+async function trackVisit(name) {
+  const entry = {
+    name,
+    date: new Date().toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' }),
+  };
+  try {
+    const getRes = await fetch(BIN_URL + '/latest', { headers: { 'X-Master-Key': API_KEY } });
+    const getData = await getRes.json();
+    const visitors = getData.record?.visitors || [];
+    // Avoid duplicate entries for same user same day
+    const today = new Date().toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'2-digit' });
+    const alreadyToday = visitors.some(v => v.name === name && v.date.startsWith(today));
+    if (!alreadyToday) {
+      visitors.push(entry);
+      const results = getData.record?.results || [];
+      await fetch(BIN_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+        body: JSON.stringify({ results, visitors }),
+      });
+    }
+  } catch (err) {
+    console.error('Visit tracking failed:', err);
+  }
 }
 
 async function saveResult(avgDist, goodQuestions) {
@@ -1595,15 +1852,31 @@ async function openAdmin() {
       headers: { 'X-Master-Key': API_KEY }
     });
     const data = await res.json();
-    const results = (data.record?.results || []).reverse(); // newest first
+    const results = (data.record?.results || []).reverse();
+    const visitors = (data.record?.visitors || []).reverse();
 
-    if (!results.length) {
-      body.innerHTML = '<div class="admin-loading">Пока никто не прошёл тест</div>';
+    if (!results.length && !visitors.length) {
+      body.innerHTML = '<div class="admin-loading">Пока никто не заходил</div>';
       return;
     }
 
-    body.innerHTML = `
-      <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px">${results.length} результатов</p>
+    // Visitors section
+    const uniqueVisitors = [...new Map(visitors.map(v => [v.name, v])).values()];
+    const visitorsHtml = `
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:10px">👥 Посетители (${uniqueVisitors.length} уникальных · ${visitors.length} визитов)</h3>
+      <table class="admin-table" style="margin-bottom:28px">
+        <thead><tr><th>Имя</th><th>Последний визит</th></tr></thead>
+        <tbody>
+          ${uniqueVisitors.map(v => `<tr>
+            <td class="atd-name">${v.name}</td>
+            <td class="atd-date">${v.date}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    // Results section
+    const resultsHtml = results.length ? `
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:10px">🎯 Результаты тестов (${results.length})</h3>
       <table class="admin-table">
         <thead><tr>
           <th>Имя</th><th>Регион</th><th>Точно</th><th>Среднее</th><th>Дата</th>
@@ -1621,7 +1894,9 @@ async function openAdmin() {
             </tr>`;
           }).join('')}
         </tbody>
-      </table>`;
+      </table>` : '<p style="color:var(--text-dim);font-size:12px">Тестов пока не пройдено</p>';
+
+    body.innerHTML = visitorsHtml + resultsHtml;
   } catch (err) {
     body.innerHTML = '<div class="admin-loading">⚠️ Ошибка загрузки</div>';
     console.error(err);
@@ -1634,6 +1909,503 @@ function closeAdmin() {
   if (!currentUserName) {
     document.getElementById('namePrompt').classList.add('visible');
     setTimeout(() => document.getElementById('nameInput').focus(), 100);
+  }
+}
+
+// Init on load
+initUser();
+
+map.on('click', onQuizMapClick);
+
+// ===== LOGISTICS GAME =====
+const LG_CITIES = [
+  { name:'Минск',       x:.46, y:.38, goods:['Тракторы','Холодильники','Телевизоры'] },
+  { name:'Гомель',      x:.68, y:.73, goods:['Фанера','Удобрения','Сталь'] },
+  { name:'Витебск',     x:.66, y:.14, goods:['Ковры','Масло','Телевизоры'] },
+  { name:'Гродно',      x:.13, y:.38, goods:['Удобрения','Ткани','Краски'] },
+  { name:'Могилёв',     x:.74, y:.38, goods:['Волокна','Лифты','Сталь'] },
+  { name:'Брест',       x:.12, y:.68, goods:['Газовые плиты','Морепродукты','Ковры'] },
+  { name:'Жодино',      x:.50, y:.28, goods:['Самосвалы','Трикотаж'] },
+  { name:'Жлобин',      x:.65, y:.58, goods:['Сталь','Прокат'] },
+  { name:'Новополоцк',  x:.58, y:.10, goods:['Нефтепродукты','Полиэтилен'] },
+  { name:'Бобруйск',    x:.60, y:.50, goods:['Шины','Зефир','Масло'] },
+  { name:'Борисов',     x:.53, y:.30, goods:['Спички','Лекарства'] },
+  { name:'Барановичи',  x:.28, y:.52, goods:['Ткани','Обувь'] },
+  { name:'Пинск',       x:.26, y:.66, goods:['Трикотаж','Кожи'] },
+  { name:'Солигорск',   x:.40, y:.56, goods:['Соль','Трикотаж'] },
+  { name:'Мозырь',      x:.58, y:.76, goods:['Нефтепродукты','Соль'] },
+];
+
+let lgRunning = false;
+let lgStartTime = 0;
+let lgMoney = 200;
+let lgHP = 5;
+let lgMaxHP = 5;
+let lgDelivered = 0;
+let lgLevel = 1;
+let lgRoutes = [];      // {from, to, trucks:[{progress,carrying,returning}]}
+let lgOrders = [];      // {from, to, goods, deadline, id}
+let lgOrderId = 0;
+let lgSelected = null;  // city index selected for route
+let lgTrucks = [];      // animated trucks on canvas
+let lgAnimFrame = null;
+let lgOrderTimer = null;
+let lgLevelTimer = null;
+let lgCanvas, lgCtx;
+let lgW, lgH;
+
+// Upgrade levels
+let lgUpgrades = { speed: 0, capacity: 0, trucks: 0 };
+const LG_UPGRADE_COSTS = {
+  speed:    [150, 300, 600],
+  capacity: [200, 400, 800],
+  trucks:   [250, 500, 1000],
+};
+const LG_UPGRADE_NAMES = {
+  speed: 'Скорость', capacity: 'Вместимость', trucks: 'Грузовиков',
+};
+
+function lgTruckSpeed()    { return 0.0006 + lgUpgrades.speed * 0.0003; }
+function lgTruckCapacity() { return 1 + lgUpgrades.capacity; }
+function lgMaxTrucksPerRoute() { return 1 + lgUpgrades.trucks; }
+
+function toggleLogistic() {
+  const el = document.getElementById('logisticOverlay');
+  const btn = document.getElementById('logisticBtn');
+  if (el.classList.contains('visible')) {
+    el.classList.remove('visible');
+    btn.classList.remove('active');
+    btn.textContent = '🚚 Логистика';
+    lgStopGame();
+  } else {
+    el.classList.add('visible');
+    btn.classList.add('active');
+    btn.textContent = '✕ Логистика';
+    lgInitCanvas();
+    document.getElementById('lgStart').style.display = 'flex';
+    document.getElementById('lgEnd').style.display = 'none';
+  }
+}
+
+function lgInitCanvas() {
+  lgCanvas = document.getElementById('lgCanvas');
+  lgCtx = lgCanvas.getContext('2d');
+  lgResize();
+  window.addEventListener('resize', lgResize);
+  lgCanvas.addEventListener('click', lgOnClick);
+}
+
+function lgResize() {
+  if (!lgCanvas) return;
+  lgCanvas.width = lgCanvas.offsetWidth;
+  lgCanvas.height = lgCanvas.offsetHeight;
+  lgW = lgCanvas.width;
+  lgH = lgCanvas.height;
+}
+
+function lgCityPos(city) {
+  return { x: city.x * lgW, y: city.y * lgH };
+}
+
+function lgStartGame() {
+  document.getElementById('lgStart').style.display = 'none';
+  document.getElementById('lgEnd').style.display = 'none';
+  lgRunning = true;
+  lgMoney = 200; lgHP = 5; lgMaxHP = 5;
+  lgDelivered = 0; lgLevel = 1;
+  lgRoutes = []; lgOrders = []; lgTrucks = [];
+  lgSelected = null;
+  lgUpgrades = { speed: 0, capacity: 0, trucks: 0 };
+  lgStartTime = Date.now();
+  lgUpdateHUD();
+  lgUpdateUpgradeButtons();
+  lgScheduleOrder();
+  lgScheduleLevel();
+  lgLoop();
+}
+
+function lgStopGame() {
+  lgRunning = false;
+  cancelAnimationFrame(lgAnimFrame);
+  clearTimeout(lgOrderTimer);
+  clearTimeout(lgLevelTimer);
+}
+
+function lgScheduleOrder() {
+  const delay = Math.max(4000 - lgLevel * 200, 1500);
+  lgOrderTimer = setTimeout(() => {
+    if (!lgRunning) return;
+    lgSpawnOrder();
+    lgScheduleOrder();
+  }, delay);
+}
+
+function lgScheduleLevel() {
+  lgLevelTimer = setTimeout(() => {
+    if (!lgRunning) return;
+    lgLevel++;
+    document.getElementById('lgLevel').textContent = lgLevel;
+    lgScheduleLevel();
+  }, 20000);
+}
+
+function lgSpawnOrder() {
+  // Pick random from/to cities that are different
+  const from = Math.floor(Math.random() * LG_CITIES.length);
+  let to = Math.floor(Math.random() * LG_CITIES.length);
+  while (to === from) to = Math.floor(Math.random() * LG_CITIES.length);
+  const goods = LG_CITIES[from].goods[Math.floor(Math.random() * LG_CITIES[from].goods.length)];
+  const deadline = Date.now() + Math.max(18000 - lgLevel * 500, 8000);
+  lgOrders.push({ from, to, goods, deadline, id: lgOrderId++ });
+  lgRenderOrders();
+}
+
+function lgOnClick(e) {
+  if (!lgRunning) return;
+  const rect = lgCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  // Find clicked city
+  let clicked = null;
+  LG_CITIES.forEach((city, i) => {
+    const pos = lgCityPos(city);
+    const dx = mx - pos.x, dy = my - pos.y;
+    if (Math.sqrt(dx*dx+dy*dy) < 20) clicked = i;
+  });
+  if (clicked === null) { lgSelected = null; return; }
+
+  if (lgSelected === null) {
+    lgSelected = clicked;
+  } else {
+    if (lgSelected !== clicked) lgAddRoute(lgSelected, clicked);
+    lgSelected = null;
+  }
+}
+
+function lgAddRoute(from, to) {
+  // Check if route already exists
+  const exists = lgRoutes.find(r => (r.from===from&&r.to===to)||(r.from===to&&r.to===from));
+  if (exists) { lgFlash('Маршрут уже существует!'); return; }
+  const cost = 50;
+  if (lgMoney < cost) { lgFlash('Недостаточно денег (нужно 50 руб.)'); return; }
+  lgMoney -= cost;
+  lgRoutes.push({ from, to, trucks: [] });
+  // Spawn trucks on route
+  for (let i = 0; i < lgMaxTrucksPerRoute(); i++) {
+    lgRoutes[lgRoutes.length-1].trucks.push({ progress: i / lgMaxTrucksPerRoute(), dir: 1, carrying: null });
+  }
+  lgUpdateHUD();
+  lgFlash(`✅ Маршрут ${LG_CITIES[from].name} → ${LG_CITIES[to].name} открыт`);
+}
+
+function lgFlash(msg) {
+  const hint = document.getElementById('lgHint');
+  hint.textContent = msg;
+  clearTimeout(hint._t);
+  hint._t = setTimeout(() => {
+    hint.textContent = 'Нажмите на город-отправитель, затем на город-получатель';
+  }, 2500);
+}
+
+function lgLoop() {
+  if (!lgRunning) return;
+  lgUpdate();
+  lgDraw();
+  lgAnimFrame = requestAnimationFrame(lgLoop);
+}
+
+function lgUpdate() {
+  const now = Date.now();
+
+  // Check expired orders
+  lgOrders = lgOrders.filter(order => {
+    if (now > order.deadline) {
+      lgHP--;
+      lgUpdateHUD();
+      if (lgHP <= 0) lgGameOver();
+      return false;
+    }
+    return true;
+  });
+
+  // Move trucks along routes
+  lgRoutes.forEach(route => {
+    route.trucks.forEach(truck => {
+      truck.progress += lgTruckSpeed() * truck.dir;
+
+      // Arrived at destination (progress >= 1)
+      if (truck.progress >= 1) {
+        truck.progress = 1;
+        truck.dir = -1;
+        // Deliver carried order
+        if (truck.carrying !== null) {
+          const oIdx = lgOrders.findIndex(o => o.id === truck.carrying);
+          if (oIdx !== -1) {
+            const reward = 80 + lgLevel * 10;
+            lgMoney += reward;
+            lgDelivered++;
+            lgOrders.splice(oIdx, 1);
+            lgRenderOrders();
+            lgUpdateHUD();
+          }
+          truck.carrying = null;
+        }
+      }
+
+      // Back at origin (progress <= 0)
+      if (truck.progress <= 0) {
+        truck.progress = 0;
+        truck.dir = 1;
+        // Pick up an order if available
+        if (truck.carrying === null) {
+          const order = lgOrders.find(o =>
+            (o.from === route.from && o.to === route.to) ||
+            (o.from === route.to && o.to === route.from)
+          );
+          if (order) {
+            truck.carrying = order.id;
+            // Flip direction if needed
+            if (order.from === route.to) { truck.dir = -1; truck.progress = 1; }
+          }
+        }
+      }
+    });
+  });
+
+  // Update order list display every 30 frames
+  if (Math.random() < 0.05) lgRenderOrders();
+}
+
+function lgDraw() {
+  const ctx = lgCtx;
+  ctx.clearRect(0, 0, lgW, lgH);
+
+  // Background
+  ctx.fillStyle = '#0a0d14';
+  ctx.fillRect(0, 0, lgW, lgH);
+
+  // Draw routes
+  lgRoutes.forEach(route => {
+    const a = lgCityPos(LG_CITIES[route.from]);
+    const b = lgCityPos(LG_CITIES[route.to]);
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = '#252a38';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // Draw trucks on routes
+  lgRoutes.forEach(route => {
+    const a = lgCityPos(LG_CITIES[route.from]);
+    const b = lgCityPos(LG_CITIES[route.to]);
+    route.trucks.forEach(truck => {
+      const t = truck.progress;
+      const x = a.x + (b.x - a.x) * t;
+      const y = a.y + (b.y - a.y) * t;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = truck.carrying !== null ? '#ff9f43' : '#4f7fff';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+  });
+
+  // Draw cities
+  LG_CITIES.forEach((city, i) => {
+    const pos = lgCityPos(city);
+    const isSelected = lgSelected === i;
+    const hasOrders = lgOrders.some(o => o.from === i || o.to === i);
+
+    // Glow for cities with orders
+    if (hasOrders) {
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 18, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,159,67,.12)';
+      ctx.fill();
+    }
+
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, isSelected ? 14 : 10, 0, Math.PI * 2);
+    ctx.fillStyle = isSelected ? '#4f7fff' : (hasOrders ? '#ff9f43' : '#778ca3');
+    ctx.fill();
+    ctx.strokeStyle = isSelected ? '#fff' : 'rgba(255,255,255,.3)';
+    ctx.lineWidth = isSelected ? 3 : 2;
+    ctx.stroke();
+
+    // City label
+    ctx.fillStyle = '#e8eaf2';
+    ctx.font = `${isSelected ? 'bold ' : ''}11px Geologica, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(city.name, pos.x, pos.y + 24);
+  });
+
+  // Draw selected city connection line to mouse (visual guide)
+  // (skipped for simplicity — the hint text is enough)
+}
+
+function lgRenderOrders() {
+  const now = Date.now();
+  const list = document.getElementById('lgOrderList');
+  if (!lgOrders.length) {
+    list.innerHTML = '<div style="padding:8px 12px;font-size:11px;color:var(--text-dim)">Нет активных заказов</div>';
+    return;
+  }
+  list.innerHTML = lgOrders.slice(0, 8).map(o => {
+    const left = Math.max(0, Math.round((o.deadline - now) / 1000));
+    const cls = left > 10 ? 'ok' : left > 5 ? 'warn' : 'late';
+    const urgency = left <= 5 ? 'urgent' : 'normal';
+    const routed = lgRoutes.some(r =>
+      (r.from===o.from&&r.to===o.to)||(r.from===o.to&&r.to===o.from));
+    return `<div class="lg-order ${urgency}">
+      <div class="lg-order-route">${LG_CITIES[o.from].name} → ${LG_CITIES[o.to].name}</div>
+      <div class="lg-order-goods">${o.goods} ${routed ? '🚚' : '⚠️ нет маршрута'}</div>
+      <div class="lg-order-timer ${cls}">⏱ ${left}с</div>
+    </div>`;
+  }).join('');
+}
+
+function lgUpdateHUD() {
+  document.getElementById('lgMoney').textContent = lgMoney;
+  document.getElementById('lgDelivered').textContent = lgDelivered;
+  document.getElementById('lgLevel').textContent = lgLevel;
+  if (lgStartTime) {
+    const secs = Math.floor((Date.now() - lgStartTime) / 1000);
+    document.getElementById('lgTimer').textContent = lgFmtTime(secs);
+  }
+  const pct = (lgHP / lgMaxHP * 100);
+  const fill = document.getElementById('lgHpFill');
+  fill.style.width = pct + '%';
+  fill.style.background = pct > 60 ? '#26de81' : pct > 30 ? '#ff9f43' : '#fc5c65';
+  document.getElementById('lgHpText').textContent = `${lgHP}/${lgMaxHP}`;
+  lgUpdateUpgradeButtons();
+}
+
+function lgUpdateUpgradeButtons() {
+  ['speed','capacity','trucks'].forEach(key => {
+    const lvl = lgUpgrades[key];
+    const costs = LG_UPGRADE_COSTS[key];
+    const btn = document.getElementById('upg' + key.charAt(0).toUpperCase() + key.slice(1));
+    const costEl = document.getElementById('upg' + key.charAt(0).toUpperCase() + key.slice(1) + 'Cost');
+    if (lvl >= costs.length) {
+      btn.disabled = true;
+      costEl.textContent = 'МАКС';
+    } else {
+      btn.disabled = lgMoney < costs[lvl];
+      costEl.textContent = costs[lvl] + ' руб.';
+    }
+  });
+}
+
+function buyUpgrade(key) {
+  const lvl = lgUpgrades[key];
+  const cost = LG_UPGRADE_COSTS[key][lvl];
+  if (!cost || lgMoney < cost) return;
+  lgMoney -= cost;
+  lgUpgrades[key]++;
+  // Add extra trucks to existing routes on trucks upgrade
+  if (key === 'trucks') {
+    lgRoutes.forEach(route => {
+      while (route.trucks.length < lgMaxTrucksPerRoute()) {
+        route.trucks.push({ progress: 0, dir: 1, carrying: null });
+      }
+    });
+  }
+  lgUpdateHUD();
+  lgFlash(`✅ ${LG_UPGRADE_NAMES[key]} улучшена!`);
+}
+
+function lgGameOver() {
+  lgRunning = false;
+  cancelAnimationFrame(lgAnimFrame);
+  clearTimeout(lgOrderTimer);
+  clearTimeout(lgLevelTimer);
+
+  const survived = Math.floor((Date.now() - lgStartTime) / 1000);
+  const mins = Math.floor(survived / 60);
+  const secs = survived % 60;
+  const timeStr = `${mins}:${secs.toString().padStart(2,'0')}`;
+
+  document.getElementById('lgEnd').style.display = 'flex';
+  document.getElementById('lgScoreFinal').textContent = `${lgDelivered} доставок · ⏱ ${timeStr}`;
+  document.getElementById('lgEndSub').textContent =
+    `Заработано: ${lgMoney} руб. · Уровень: ${lgLevel} · Маршрутов: ${lgRoutes.length}`;
+
+  lgSaveScore(survived);
+}
+
+function lgFmtTime(secs) {
+  const m = Math.floor(secs / 60), s = secs % 60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+async function lgSaveScore(survived) {
+  const name = currentUserName || 'Аноним';
+  const entry = {
+    name,
+    survived,
+    delivered: lgDelivered,
+    money: lgMoney,
+    level: lgLevel,
+    date: new Date().toLocaleDateString('ru-RU', {day:'2-digit',month:'2-digit',year:'2-digit'}),
+  };
+  try {
+    const getRes = await fetch(BIN_URL + '/latest', { headers: {'X-Master-Key': API_KEY} });
+    const getData = await getRes.json();
+    const scores = getData.record?.lgScores || [];
+    scores.push(entry);
+    const results = getData.record?.results || [];
+    const visitors = getData.record?.visitors || [];
+    await fetch(BIN_URL, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json','X-Master-Key': API_KEY},
+      body: JSON.stringify({ results, visitors, lgScores: scores }),
+    });
+  } catch(e) { console.error('lgSaveScore failed', e); }
+}
+
+async function lgShowLeaderboard() {
+  const lb = document.getElementById('lgLeaderboard');
+  lb.style.display = 'flex';
+  const body = document.getElementById('lgLeaderboardBody');
+  body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">Загрузка…</div>';
+  try {
+    const res = await fetch(BIN_URL + '/latest', { headers: {'X-Master-Key': API_KEY} });
+    const data = await res.json();
+    const scores = (data.record?.lgScores || [])
+      .sort((a,b) => b.survived - a.survived)
+      .slice(0, 20);
+    if (!scores.length) {
+      body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">Пока нет результатов</div>';
+      return;
+    }
+    const medals = ['🥇','🥈','🥉'];
+    body.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr>
+        <th style="text-align:left;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)">#</th>
+        <th style="text-align:left;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)">Имя</th>
+        <th style="text-align:left;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)">⏱ Время</th>
+        <th style="text-align:left;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)">📦 Доставок</th>
+        <th style="text-align:left;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)">Дата</th>
+      </tr></thead>
+      <tbody>
+        ${scores.map((s,i) => `<tr style="${s.name===currentUserName?'background:var(--active-bg, #1a2340)':''}">
+          <td style="padding:8px 8px;border-bottom:1px solid var(--border)">${medals[i] || (i+1)}</td>
+          <td style="padding:8px 8px;border-bottom:1px solid var(--border);font-weight:600">${s.name}</td>
+          <td style="padding:8px 8px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;color:#26de81">${lgFmtTime(s.survived)}</td>
+          <td style="padding:8px 8px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace">${s.delivered}</td>
+          <td style="padding:8px 8px;border-bottom:1px solid var(--border);color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:10px">${s.date}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  } catch(e) {
+    body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">⚠️ Ошибка загрузки</div>';
   }
 }
 
