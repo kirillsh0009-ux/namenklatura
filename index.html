@@ -851,6 +851,12 @@ function buildMarkers() {
     m.bindPopup(popupHtml, { maxWidth: 280 });
     m.addTo(map);
     markers[city] = m;
+
+    // 🥚 Easter egg
+    if (city === 'Гатово') {
+      m.on('contextmenu', gatevoEgg);
+      m.on('click', gatevoEgg);
+    }
   });
 }
 
@@ -1422,6 +1428,19 @@ buildSectorTabs();
 buildRegionTabs();
 buildMarkers();
 buildList();
+
+// 🥚 Easter egg — Гатово
+let gatevoClicks = 0, gatevoTimer = null;
+function gatevoEgg(e) {
+  if (e.type === 'contextmenu') e.preventDefault();
+  gatevoClicks++;
+  clearTimeout(gatevoTimer);
+  gatevoTimer = setTimeout(() => { gatevoClicks = 0; }, 2000);
+  if (gatevoClicks >= 3) {
+    gatevoClicks = 0;
+    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+  }
+}
 </script>
 </body>
 </html>
